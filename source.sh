@@ -3,20 +3,20 @@
 del_stopped()
 {
   local name=$1
-  local state=$(sudo docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
+  local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
 
   if [[ "$state" == "false" ]]; then
-    sudo docker rm $name
+    docker rm $name
   fi
 }
 
 exec_if_running()
 {
   local name=$1
-  local state=$(sudo docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
+  local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
 
   if [[ "$state" == "true" ]]; then
-    sudo docker exec -it $name bash
+    docker exec -it $name bash
   fi
 }
 

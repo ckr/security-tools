@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BUILD_DATE=`date +"%m%d%y"`
+BUILD_DATE=`date +"%Y%m%d"`
 
 echo "" > manifest.ini
 
