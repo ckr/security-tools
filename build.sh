@@ -4,6 +4,7 @@ BUILD_DATE=`date +"%Y%m%d"`
 
 echo "" > manifest.ini
 
+
 for FOLDER in */
 do
 	FILE=${FOLDER%/}

@@ -20,12 +20,12 @@ exec_if_running()
   fi
 }
 
-
-#DOCKER_REPO="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
 echo Loading Docker tools...
 
-for load in `find ./ -type f -name ".run.bash"`
+for load in `find $SCRIPTPATH -type f -name ".run.bash"`
 do
-	. $load
+  echo Loading $load
+	source $load
 done
