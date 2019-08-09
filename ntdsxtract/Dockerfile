@@ -1,29 +1,14 @@
-FROM justckr/ubuntu-base:latest
+FROM python:2.7
 
 MAINTAINER Constantinos Kouloumbris <c@kouloumbris.com>
 
-# Install packages
-ENV DEBIAN_FRONTEND noninteractive
+WORKDIR /usr/src/app
 
-RUN \
-	apt-get update && \
-	apt-get install -y build-essential \
-	libtool \
-	pkg-config \
-	debhelper \
-	autotools-dev \
-	python-all-dev \
-	dh-autoreconf \
-	python-pip
-
-RUN \
-	git clone https://github.com/csababarta/ntdsxtract.git && \
-	cd ntdsxtract && \
-	pip install pycrypto
+RUN git clone https://github.com/csababarta/ntdsxtract.git .
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
 RUN mkdir -p /secure/home
-
 WORKDIR /secure/home
 
-# ENTRYPOINT ["bash"]
-ENTRYPOINT ["/ntdsxtract/dsusers.py"]
+ENTRYPOINT ["/usr/src/app/dsusers.py"]

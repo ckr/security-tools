@@ -1,36 +1,46 @@
-FROM justckr/ubuntu-base:latest
+FROM alpine:latest
 
 MAINTAINER Constantinos Kouloumbris <c@kouloumbris.com>
 
-# Install packages
-ENV DEBIAN_FRONTEND noninteractive
+ENV LIBUNA_VERSION 20190102
+ENV LIBESEDB_VERSION 20181229
 
-RUN \
-	apt-get update && \
-	apt-get install -y build-essential \
-	autoconf \
-	automake \
-	autopoint \
-	libtool \
-	pkg-config \
-	debhelper \
-	fakeroot \
-	autotools-dev \
-	python-all-dev \
-	dh-autoreconf \
-	python3-all-dev
+WORKDIR /usr/src/app
 
-RUN \
-	git clone https://github.com/libyal/libesedb.git && \
-	cd libesedb && \
-	./synclibs.sh && \
-	./autogen.sh && \
-	./configure && \
-	cp -rf dpkg debian && \
-	dpkg-buildpackage -b -rfakeroot -us -uc
+RUN apk update \
+  && apk add --virtual .deps build-base \
+                             ca-certificates \
+                             curl \
+  # Install libuna (because libesedb won't install with local one smh)
+  && curl -sLo libuna.tar.gz https://github.com/libyal/libuna/releases/download/${LIBUNA_VERSION}/libuna-alpha-${LIBUNA_VERSION}.tar.gz \
+  && tar xf libuna.tar.gz \
+  && cd libuna-${LIBUNA_VERSION} \
+  && ./configure \
+  && make \
+  && make install \
+  && cd .. \
+  && rm -rf libuna* \
+  \
+  # Install libesedb
+  && curl -sLo libesedb.tar.gz https://github.com/libyal/libuna/releases/download/${LIBESEDB_VERSION}/libesedb-experimental-${LIBESEDB_VERSION}.tar.gz \
+  && tar xf libesedb.tar.gz \
+  && cd libesedb-${LIBESEDB_VERSION} \
+  && ./configure \
+  && make \
+  && make install \
+  && cd .. \
+  && rm -rf libesedb* \
+  \
+  # Clean up
+  && apk del .deps \
+  && rm -rf /var/cache/apk/* \
+  \
+  # Add regular user
+  && adduser -D esedb
+
+USER esedb
 
 RUN mkdir -p /secure/home
-
 WORKDIR /secure/home
 
-ENTRYPOINT ["/libesedb/esedbtools/esedbexport"]
+ENTRYPOINT ["esedbexport"]
