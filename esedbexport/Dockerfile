@@ -36,7 +36,7 @@ RUN apk update \
   && rm -rf /var/cache/apk/* \
   \
   # Add regular user
-  && adduser -D esedb
+  && adduser -D esedb \
   && mkdir -p /secure/home
 
 USER esedb
