@@ -20,7 +20,7 @@ exec_if_running()
   fi
 }
 
-SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+SCRIPTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 echo Loading Docker tools...
 
