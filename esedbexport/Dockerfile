@@ -10,10 +10,10 @@ WORKDIR /usr/src/app
 RUN apk update \
   && apk add --virtual .deps build-base \
                              ca-certificates \
-                             curl \
+                             wget \
   # Install libuna (because libesedb won't install with local one smh)
-  && curl -sLo libuna.tar.gz https://github.com/libyal/libuna/releases/download/${LIBUNA_VERSION}/libuna-alpha-${LIBUNA_VERSION}.tar.gz \
-  && tar xf libuna.tar.gz \
+  && wget --output-document=libuna.tar.gz https://github.com/libyal/libuna/releases/download/${LIBUNA_VERSION}/libuna-alpha-${LIBUNA_VERSION}.tar.gz \
+  && tar -xvzf libuna.tar.gz \
   && cd libuna-${LIBUNA_VERSION} \
   && ./configure \
   && make \
@@ -22,8 +22,8 @@ RUN apk update \
   && rm -rf libuna* \
   \
   # Install libesedb
-  && curl -sLo libesedb.tar.gz https://github.com/libyal/libuna/releases/download/${LIBESEDB_VERSION}/libesedb-experimental-${LIBESEDB_VERSION}.tar.gz \
-  && tar xf libesedb.tar.gz \
+  && wget --output-document=libesedb.tar.gz https://github.com/libyal/libesedb/releases/download/${LIBESEDB_VERSION}/libesedb-experimental-${LIBESEDB_VERSION}.tar.gz \
+  && tar -xvzf libesedb.tar.gz \
   && cd libesedb-${LIBESEDB_VERSION} \
   && ./configure \
   && make \
@@ -37,10 +37,10 @@ RUN apk update \
   \
   # Add regular user
   && adduser -D esedb
+  && mkdir -p /secure/home
 
 USER esedb
 
-RUN mkdir -p /secure/home
 WORKDIR /secure/home
 
 ENTRYPOINT ["esedbexport"]
