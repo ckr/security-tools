@@ -1,6 +1,6 @@
 FROM pypy:3.5-7-slim
 
-MAINTAINER Constantinos Kouloumbris <c@kouloumbris.com>
+LABEL maintainer="Constantinos Kouloumbris <c@kouloumbris.com>"
 
 ENV PARSEDMARC_VERSION 6.5.4
 RUN apt-get update \

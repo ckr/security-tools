@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-MAINTAINER Constantinos Kouloumbris <c@kouloumbris.com>
+LABEL maintainer="Constantinos Kouloumbris <c@kouloumbris.com>"
 
 ENV LIBUNA_VERSION 20190102
 ENV LIBESEDB_VERSION 20181229

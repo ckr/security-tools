@@ -1,6 +1,6 @@
 FROM python:2.7
 
-MAINTAINER Constantinos Kouloumbris <c@kouloumbris.com>
+LABEL maintainer="Constantinos Kouloumbris <c@kouloumbris.com>"
 
 WORKDIR /usr/src/app
 
