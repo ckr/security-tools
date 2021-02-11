@@ -1,4 +1,4 @@
-#!/bin/bash
+
 
 del_stopped()
 {
